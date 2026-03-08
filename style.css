@@ -772,6 +772,18 @@ label {
     .mobile-label {
         display: block;
     }
+
+    .quick-sheet-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .summary-head {
+        flex-direction: column;
+    }
+
+    .summary-badge {
+        align-self: flex-start;
+    }
 }
 
 @media (max-width: 640px) {
@@ -795,6 +807,10 @@ label {
 
     .topnav {
         display: none;
+    }
+
+    .workspace-layout {
+        gap: 0.75rem;
     }
 
     h2 {
@@ -825,6 +841,25 @@ label {
     .metric-card,
     .panel-card {
         border-radius: 16px;
+    }
+
+    .commercial-item,
+    .metric-card,
+    .panel-card,
+    .quick-add-panel {
+        padding: 0.9rem;
+    }
+
+    .quick-sheet-grid {
+        gap: 0.5rem;
+    }
+
+    .roll-preset {
+        padding: 0.8rem 0.6rem;
+    }
+
+    .legend-item {
+        align-items: flex-start;
     }
 
     button {
