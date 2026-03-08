@@ -1,0 +1,27 @@
+{
+  "name": "Calculadora DTF PRO",
+  "short_name": "DTF PRO",
+  "description": "Calculadora de acomodo optimizado para rollos DTF con costeo y comparación de anchos rápidos.",
+  "lang": "es-UY",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0d0d0f",
+  "theme_color": "#0d0d0f",
+  "categories": ["business", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "./assets/icon-dtf.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "./assets/icon-dtf-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}

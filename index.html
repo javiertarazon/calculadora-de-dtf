@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora DTF PRO</title>
+    <meta name="theme-color" content="#0d0d0f">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="DTF PRO">
+    <meta name="application-name" content="Calculadora DTF PRO">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="assets/icon-dtf.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="assets/icon-dtf.svg">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="topbar">
+        <div class="brand-lockup">
+            <div class="brand-badge">DTF</div>
+            <div>
+                <p class="brand-overline">Planificador de rollo</p>
+                <h1>Calculadora DTF PRO</h1>
+            </div>
+        </div>
+        <nav class="topnav" aria-label="Accesos rápidos">
+            <span>Ancho fijo</span>
+            <span>Largo calculado</span>
+            <span>Mezcla optimizada</span>
+        </nav>
+    </header>
+
+    <main class="app-shell">
+        <section class="intro-panel">
+            <div>
+                <p class="eyebrow">Herramienta de producción</p>
+                <h2>Calcula el largo real del rollo DTF según el ancho de la lámina y una mezcla de diseños con distintas cantidades.</h2>
+                <p class="hero-copy">La calculadora trabaja con ancho fijo de rollo. Tú defines el ancho disponible, la separación mínima y todos los diseños con sus repeticiones. El sistema estima el largo necesario y genera un acomodo optimizado para aprovechar al máximo el material.</p>
+            </div>
+            <details class="instructions-box">
+                <summary>Ver instrucciones</summary>
+                <ol>
+                    <li>Elige la unidad y el ancho del rollo.</li>
+                    <li>Define la separación mínima entre piezas.</li>
+                    <li>Agrega todos los diseños con sus medidas y cantidades.</li>
+                    <li>Activa rotación si quieres que el sistema use giros de 90°.</li>
+                    <li>Compara cálculo simple contra optimizado y usa el largo resultante para tu orden.</li>
+                </ol>
+            </details>
+        </section>
+
+        <section class="quick-sheet-panel">
+            <div>
+                <p class="section-label">Anchos rápidos de rollo</p>
+                <div class="quick-sheet-grid">
+                    <button type="button" class="roll-preset" data-width-mm="300">30 cm</button>
+                    <button type="button" class="roll-preset" data-width-mm="450">45 cm</button>
+                    <button type="button" class="roll-preset" data-width-mm="600">60 cm</button>
+                </div>
+            </div>
+            <div class="settings-launcher panel-card-lite">
+                <p class="section-label">Configuración</p>
+                <p class="helper-text">Define seguridad lateral, separación mínima por defecto, precios lineales por ancho y costo fijo.</p>
+                <button type="button" id="open-settings" class="button-secondary">Abrir configuración</button>
+                <p id="settings-status" class="preset-status" aria-live="polite"></p>
+            </div>
+        </section>
+
+        <section id="settings-panel" class="panel-card settings-panel is-hidden">
+            <div class="panel-heading panel-heading-space">
+                <div class="panel-heading-inline">
+                    <span class="step-badge">Cfg</span>
+                    <div>
+                        <h3>Configuración base</h3>
+                        <p class="helper-text">Estos valores quedan guardados en el navegador y se usan como base de trabajo.</p>
+                    </div>
+                </div>
+                <button type="button" id="close-settings" class="button-secondary">Cerrar</button>
+            </div>
+
+            <div class="field-grid field-grid-three settings-grid">
+                <label>Margen de seguridad por lado (<span data-unit-label>mm</span>)
+                    <input type="number" id="settings-safety-side" value="1" min="0" step="0.1" data-dimension>
+                </label>
+                <label>Separación mínima por defecto (<span data-unit-label>mm</span>)
+                    <input type="number" id="settings-default-spacing" value="0.5" min="0" step="0.1" data-dimension>
+                </label>
+                <label>Costo fijo por defecto
+                    <input type="number" id="settings-fixed-cost" value="0" min="0" step="0.01">
+                </label>
+                <label>Precio lineal ancho 30 cm
+                    <input type="number" id="settings-price-30" value="0" min="0" step="0.01">
+                </label>
+                <label>Precio lineal ancho 45 cm
+                    <input type="number" id="settings-price-45" value="0" min="0" step="0.01">
+                </label>
+                <label>Precio lineal ancho 60 cm
+                    <input type="number" id="settings-price-60" value="0" min="0" step="0.01">
+                </label>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" id="save-settings">Guardar configuración</button>
+                <button type="button" id="reset-settings" class="button-secondary">Restaurar configuración base</button>
+            </div>
+        </section>
+
+        <div class="workspace-layout">
+            <form id="calc-form" class="calculator-panel">
+                <section class="panel-card">
+                    <div class="panel-heading">
+                        <span class="step-badge">01</span>
+                        <div>
+                            <h3>Rollo DTF</h3>
+                            <p class="helper-text">El ancho es fijo y el sistema calcula el largo total requerido.</p>
+                        </div>
+                    </div>
+                    <div class="field-grid field-grid-compact field-grid-three">
+                        <label>Unidad de medida
+                            <select id="unit-system">
+                                <option value="mm">Milímetros (mm)</option>
+                                <option value="cm" selected>Centímetros (cm)</option>
+                            </select>
+                        </label>
+                        <label>Ancho del rollo (<span data-unit-label>mm</span>)
+                            <input type="number" id="roll-width" value="60" min="1" step="0.1" required data-dimension>
+                        </label>
+                        <label>Separación mínima (<span data-unit-label>mm</span>)
+                            <input type="number" id="margin" value="0.5" min="0" step="0.1" data-dimension>
+                        </label>
+                    </div>
+                    <div class="operational-note" id="usable-width-note"></div>
+                    <div class="inline-options">
+                        <label class="inline-check">
+                            <input type="checkbox" id="allow-rotate" checked>
+                            Permitir rotación de 90°
+                        </label>
+                        <span class="mode-pill">Modo optimizado</span>
+                    </div>
+                </section>
+
+                <section class="panel-card">
+                    <div class="panel-heading panel-heading-space">
+                        <div class="panel-heading-inline">
+                            <span class="step-badge">02</span>
+                            <div>
+                                <h3>Lista de diseños</h3>
+                                <p class="helper-text">Agrega varios tamaños con cantidades distintas. Cada fila representa un diseño diferente.</p>
+                            </div>
+                        </div>
+                        <button type="button" id="add-design" class="button-secondary">Agregar diseño</button>
+                    </div>
+                    <div id="quick-add-panel" class="quick-add-panel is-hidden">
+                        <div class="quick-add-head">
+                            <div>
+                                <p class="section-label">Configuración rápida</p>
+                                <p class="helper-text">Selecciona una ubicación y un tamaño para crear una fila base editable.</p>
+                            </div>
+                            <button type="button" id="close-quick-add" class="button-secondary">Cerrar</button>
+                        </div>
+                        <div class="quick-add-grid">
+                            <div>
+                                <p class="quick-add-label">Ubicación</p>
+                                <div class="segmented-group" id="quick-position-group">
+                                    <button type="button" class="segment-button is-active" data-position="frente">Frente</button>
+                                    <button type="button" class="segment-button" data-position="espalda">Espalda</button>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="quick-add-label">Tamaño</p>
+                                <div class="segmented-group" id="quick-size-group">
+                                    <button type="button" class="segment-button is-active" data-size="pequeno">Pequeño</button>
+                                    <button type="button" class="segment-button" data-size="mediano">Mediano</button>
+                                    <button type="button" class="segment-button" data-size="grande">Grande</button>
+                                </div>
+                            </div>
+                            <label>Cantidad inicial
+                                <input type="number" id="quick-quantity" min="1" step="1" value="1">
+                            </label>
+                            <div class="quick-add-actions">
+                                <button type="button" id="confirm-quick-add">Crear diseño</button>
+                                <button type="button" id="manual-quick-add" class="button-secondary">Fila vacía</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="design-list-header design-grid">
+                        <span>Diseño</span>
+                        <span>Ancho</span>
+                        <span>Alto</span>
+                        <span>Cantidad</span>
+                        <span></span>
+                    </div>
+                    <div id="design-list" class="design-list"></div>
+                </section>
+
+                <section class="panel-card">
+                    <div class="panel-heading">
+                        <span class="step-badge">03</span>
+                        <div>
+                            <h3>Costeo automático</h3>
+                            <p class="helper-text">Las tarifas se toman desde la configuración base según el ancho del rollo.</p>
+                        </div>
+                    </div>
+                    <div class="field-grid field-grid-compact field-grid-three">
+                        <label>Precio lineal aplicado
+                            <input type="text" id="applied-linear-price" value="0" readonly>
+                        </label>
+                        <label>Costo fijo aplicado
+                            <input type="text" id="applied-fixed-cost" value="0" readonly>
+                        </label>
+                        <label>Margen de ganancia (%)
+                            <input type="number" id="profit-margin" value="30" min="0" step="0.01">
+                        </label>
+                    </div>
+                    <div class="operational-note" id="pricing-source-note"></div>
+                </section>
+
+                <div class="form-actions">
+                    <button type="submit">Calcular acomodo</button>
+                    <button type="button" id="reset-form" class="button-secondary">Restablecer</button>
+                </div>
+            </form>
+
+            <aside class="summary-panel">
+                <section id="result" class="result-shell">
+                    <p class="placeholder">Agrega los diseños y la calculadora estimará el largo lineal del rollo, el aprovechamiento y la organización óptima.</p>
+                </section>
+            </aside>
+        </div>
+    </main>
+
+    <template id="design-row-template">
+        <div class="design-row design-grid">
+            <label>
+                <span class="mobile-label">Diseño</span>
+                <input type="text" class="design-name" placeholder="Ej: Pecho 9x12" maxlength="40">
+            </label>
+            <label>
+                <span class="mobile-label">Ancho</span>
+                <input type="number" class="design-width" min="0" step="0.1" data-dimension>
+            </label>
+            <label>
+                <span class="mobile-label">Alto</span>
+                <input type="number" class="design-height" min="0" step="0.1" data-dimension>
+            </label>
+            <label>
+                <span class="mobile-label">Cantidad</span>
+                <input type="number" class="design-quantity" min="0" step="1">
+            </label>
+            <button type="button" class="remove-design button-secondary">Quitar</button>
+        </div>
+    </template>
+
+    <script src="script.js"></script>
+</body>
+</html>
