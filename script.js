@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeSettingsButton = document.getElementById('close-settings');
     const saveSettingsButton = document.getElementById('save-settings');
     const resetSettingsButton = document.getElementById('reset-settings');
+    const clearLocalDataButton = document.getElementById('clear-local-data');
     const settingsStatus = document.getElementById('settings-status');
 
     let previousUnit = unitSelect.value;
@@ -216,7 +217,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             currentSettings = nextSettings;
-            setStorageJson(SETTINGS_KEY, currentSettings);
+            if (!setStorageJson(SETTINGS_KEY, currentSettings)) {
+                setSettingsStatus('No se pudo guardar la configuración local en este navegador.');
+                return;
+            }
             document.getElementById('margin').value = displayLengthFromMm(currentSettings.defaultSpacingMm, unitSelect.value);
             updateOperationalNotes();
             persistCurrentForm();
@@ -228,11 +232,28 @@ document.addEventListener('DOMContentLoaded', () => {
             currentSettings = cloneSettings(DEFAULT_SETTINGS);
             syncSettingsInputsFromState(currentSettings, unitSelect.value);
             document.getElementById('margin').value = displayLengthFromMm(currentSettings.defaultSpacingMm, unitSelect.value);
-            setStorageJson(SETTINGS_KEY, currentSettings);
+            if (!setStorageJson(SETTINGS_KEY, currentSettings)) {
+                setSettingsStatus('No se pudo restaurar la configuración base en el almacenamiento local.');
+                return;
+            }
             updateOperationalNotes();
             persistCurrentForm();
             markResultsAsStale('Configuración base restaurada. Pulsa Calcular acomodo para recalcular.');
             setSettingsStatus('Configuración base restaurada.');
+        });
+
+        clearLocalDataButton.addEventListener('click', () => {
+            clearLocalAppData();
+            currentSettings = cloneSettings(DEFAULT_SETTINGS);
+            syncSettingsInputsFromState(currentSettings, unitSelect.value);
+            applyDefaultFormValues();
+            renderDesignRows(getDefaultDesigns());
+            updateUnitLabels(unitSelect.value);
+            updateRollPresetLabels(unitSelect.value);
+            previousUnit = unitSelect.value;
+            updateOperationalNotes();
+            markResultsAsStale('Datos locales borrados. La app volvió a la configuración inicial.');
+            setSettingsStatus('Datos locales eliminados en este navegador.');
         });
 
         resetButton.addEventListener('click', () => {
@@ -1003,11 +1024,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function loadStoredState() {
         const parsed = getStorageJson(STORAGE_KEY);
-        return parsed && typeof parsed === 'object' ? parsed : null;
+        return parsed && typeof parsed === 'object' ? sanitizeStoredState(parsed) : null;
     }
 
     function persistCurrentForm() {
-        setStorageJson(STORAGE_KEY, collectFormState());
+        const saved = setStorageJson(STORAGE_KEY, collectFormState());
+        if (!saved) {
+            setSettingsStatus('No se pudo guardar el formulario localmente.');
+        }
+        return saved;
+    }
+
+    function clearLocalAppData() {
+        try {
+            localStorage.removeItem(STORAGE_KEY);
+            localStorage.removeItem(SETTINGS_KEY);
+        } catch {
+            setSettingsStatus('No se pudieron borrar los datos locales del navegador.');
+        }
+    }
+
+    function sanitizeStoredState(state) {
+        const normalizedUnit = state.unitSystem === 'mm' ? 'mm' : 'cm';
+        const normalizedDesigns = Array.isArray(state.designs)
+            ? state.designs.map((design) => ({
+                name: typeof design?.name === 'string' ? design.name : '',
+                width: Number.isFinite(design?.width) ? design.width : '',
+                height: Number.isFinite(design?.height) ? design.height : '',
+                quantity: Number.isFinite(design?.quantity) ? Math.max(0, Math.round(design.quantity)) : 0,
+            }))
+            : getDefaultDesigns();
+
+        return {
+            unitSystem: normalizedUnit,
+            rollWidth: Number.isFinite(state.rollWidth) ? Math.max(0, state.rollWidth) : displayLengthFromMm(600, normalizedUnit),
+            margin: Number.isFinite(state.margin) ? Math.max(0, state.margin) : displayLengthFromMm(currentSettings.defaultSpacingMm, normalizedUnit),
+            allowRotate: state.allowRotate !== false,
+            mode: 'optimized',
+            profitMargin: Number.isFinite(state.profitMargin) ? Math.max(0, state.profitMargin) : 30,
+            designs: normalizedDesigns.length > 0 ? normalizedDesigns : getDefaultDesigns(),
+        };
     }
 
     function resolvePricingForWidth(nominalWidthMm, settings, unitSystem) {

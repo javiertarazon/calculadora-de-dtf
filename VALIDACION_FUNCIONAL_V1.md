@@ -34,6 +34,8 @@ Recursos PWA servidos correctamente:
 - [ ] Validar guardado de separacion por defecto
 - [ ] Validar guardado de costos y tarifas
 - [ ] Validar restauracion de configuracion base
+- [ ] Validar borrado manual de datos locales
+- [ ] Validar recuperacion segura si localStorage tiene datos corruptos
 
 ### 4. UI y flujo
 - [ ] Abrir y cerrar panel de configuracion
