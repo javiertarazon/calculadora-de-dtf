@@ -10,6 +10,14 @@ Recursos PWA servidos correctamente:
 - manifest.webmanifest: OK
 - sw.js: OK
 
+Validacion automatizada del motor:
+- validate_engine.js: OK
+- Redondeo de facturacion por 10 cm: OK
+- Normalizacion de ancho util: OK
+- Caso base simple/optimizado: OK
+- Deteccion de diseño fuera de ancho util: OK
+- Caso mixto optimizado: OK
+
 ## Checklist funcional
 
 ### 1. Calculo principal
