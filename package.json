@@ -1,0 +1,13 @@
+{
+  "name": "calculadora-dtf-pro",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Calculadora web DTF con acomodo optimizado, costeo y base PWA instalable.",
+  "scripts": {
+    "start": "node server.js",
+    "serve": "node server.js",
+    "test": "node validate_engine.js && node validate_persistence.js",
+    "test:engine": "node validate_engine.js",
+    "test:persistence": "node validate_persistence.js"
+  }
+}

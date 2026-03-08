@@ -21,6 +21,15 @@ Abre `index.html` en un navegador moderno.
 
 Para probar instalacion y service worker, conviene servir la carpeta por HTTP local en vez de abrirla solo como archivo.
 
+Con Node.js instalado, puedes usar el arranque estandar del proyecto:
+
+- `npm start` levanta el servidor estatico local
+- `npm test` ejecuta las validaciones del motor y de persistencia
+
+En PowerShell de Windows, si `npm` queda bloqueado por execution policy, usa `npm.cmd start` y `npm.cmd test`.
+
+El servidor intenta usar el puerto 4173. Si ese puerto ya esta ocupado, busca automaticamente uno libre cercano y muestra la URL correcta en consola.
+
 ## Fases del proyecto
 
 1. Base responsive estable: completada a nivel base.

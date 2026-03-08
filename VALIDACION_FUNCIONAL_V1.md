@@ -4,6 +4,11 @@
 
 Servidor local validado en:
 - http://127.0.0.1:4173/index.html
+- http://127.0.0.1:4174/manifest.webmanifest (fallback automatico por puerto ocupado)
+
+Flujo local con Node validado:
+- npm.cmd test: OK
+- node server.js con fallback de puerto: OK
 
 Recursos PWA servidos correctamente:
 - index.html: OK
