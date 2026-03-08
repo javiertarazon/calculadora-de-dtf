@@ -18,6 +18,13 @@ Validacion automatizada del motor:
 - Deteccion de diseño fuera de ancho util: OK
 - Caso mixto optimizado: OK
 
+Validacion automatizada de persistencia:
+- validate_persistence.js: OK
+- Fallback a configuracion base: OK
+- Saneamiento de configuracion corrupta: OK
+- Saneamiento de formulario corrupto: OK
+- Recuperacion de diseños por defecto: OK
+
 ## Checklist funcional
 
 ### 1. Calculo principal
