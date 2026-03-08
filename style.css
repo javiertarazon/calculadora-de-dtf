@@ -777,7 +777,7 @@ label {
 @media (max-width: 640px) {
     main.app-shell {
         width: min(100% - 1rem, 1000px);
-        padding: 0.75rem 0 1.5rem;
+        padding: 0.75rem 0 calc(1.5rem + env(safe-area-inset-bottom, 0px));
     }
 
     .intro-panel,
@@ -804,6 +804,27 @@ label {
     .form-actions,
     .result-actions {
         flex-direction: column;
+    }
+
+    input,
+    select,
+    button {
+        font-size: 16px;
+    }
+
+    .metric-value-priority {
+        font-size: 2rem;
+    }
+
+    .metric-value {
+        font-size: 1.7rem;
+    }
+
+    .comparison,
+    .commercial-item,
+    .metric-card,
+    .panel-card {
+        border-radius: 16px;
     }
 
     button {
