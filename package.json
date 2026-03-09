@@ -6,8 +6,9 @@
   "scripts": {
     "start": "node server.js",
     "serve": "node server.js",
-    "test": "node validate_engine.js && node validate_persistence.js",
+    "test": "node validate_engine.js && node validate_persistence.js && node validate_server.js",
     "test:engine": "node validate_engine.js",
-    "test:persistence": "node validate_persistence.js"
+    "test:persistence": "node validate_persistence.js",
+    "test:server": "node validate_server.js"
   }
 }

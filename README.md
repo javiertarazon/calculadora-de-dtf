@@ -24,7 +24,8 @@ Para probar instalacion y service worker, conviene servir la carpeta por HTTP lo
 Con Node.js instalado, puedes usar el arranque estandar del proyecto:
 
 - `npm start` levanta el servidor estatico local
-- `npm test` ejecuta las validaciones del motor y de persistencia
+- `npm test` ejecuta validaciones del motor, persistencia y servidor HTTP
+- `npm run test:server` valida el servidor local, el fallback de puerto y los recursos PWA principales
 
 En PowerShell de Windows, si `npm` queda bloqueado por execution policy, usa `npm.cmd start` y `npm.cmd test`.
 

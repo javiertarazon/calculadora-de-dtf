@@ -14,6 +14,7 @@ Recursos PWA servidos correctamente:
 - index.html: OK
 - manifest.webmanifest: OK
 - sw.js: OK
+- VERSION: OK
 
 Validacion automatizada del motor:
 - validate_engine.js: OK
@@ -29,6 +30,13 @@ Validacion automatizada de persistencia:
 - Saneamiento de configuracion corrupta: OK
 - Saneamiento de formulario corrupto: OK
 - Recuperacion de diseños por defecto: OK
+
+Validacion automatizada del servidor local:
+- validate_server.js: OK
+- Fallback automatico de puerto: OK
+- index.html servido por HTTP: OK
+- manifest.webmanifest servido con MIME correcto: OK
+- sw.js y VERSION disponibles por HTTP: OK
 
 ## Checklist funcional
 
