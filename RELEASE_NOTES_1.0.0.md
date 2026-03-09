@@ -8,6 +8,7 @@
 - configuracion persistente en navegador
 - exportacion de imagen y orden
 - base PWA instalable
+- estado visible de instalacion y conectividad
 - arranque local estandar con Node
 - fallback automatico de puerto para servidor local
 - suite automatizada para motor, persistencia, servidor HTTP y contrato PWA

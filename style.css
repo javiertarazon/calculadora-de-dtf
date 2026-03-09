@@ -219,6 +219,43 @@ h2 {
     align-self: stretch;
 }
 
+.app-status-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin: 0.85rem 0;
+}
+
+.app-status-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.55rem 0.8rem;
+    border-radius: 999px;
+    background: rgba(39, 179, 126, 0.14);
+    border: 1px solid rgba(39, 179, 126, 0.22);
+    color: #8ef0c8;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.app-status-pill-muted {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: var(--line);
+    color: var(--muted);
+}
+
+.app-status-pill-warning {
+    background: rgba(245, 158, 11, 0.16);
+    border-color: rgba(245, 158, 11, 0.28);
+    color: #ffd08a;
+}
+
+.app-status-pill-offline {
+    background: rgba(56, 189, 248, 0.14);
+    border-color: rgba(56, 189, 248, 0.24);
+    color: #8fdcff;
+}
+
 .preset-actions {
     display: grid;
     grid-template-columns: minmax(220px, 1fr) repeat(3, auto);
@@ -796,6 +833,10 @@ label {
         order: -1;
     }
 
+    .app-status-strip {
+        gap: 0.45rem;
+    }
+
     .summary-head {
         flex-direction: column;
     }
@@ -879,6 +920,11 @@ label {
     .quick-sheet-grid {
         grid-template-columns: 1fr;
         gap: 0.5rem;
+    }
+
+    .app-status-strip {
+        flex-direction: column;
+        align-items: stretch;
     }
 
     .roll-preset {

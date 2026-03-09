@@ -54,11 +54,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const resetSettingsButton = document.getElementById('reset-settings');
     const clearLocalDataButton = document.getElementById('clear-local-data');
     const settingsStatus = document.getElementById('settings-status');
+    const installStatus = document.getElementById('install-status');
+    const connectionStatus = document.getElementById('connection-status');
+    const installAppButton = document.getElementById('install-app');
 
     let previousUnit = unitSelect.value;
     let currentCalculation = null;
     let quickSelection = {position: 'frente', size: 'pequeno'};
     let currentSettings = loadSettings();
+    let deferredInstallPrompt = null;
 
     initialize();
 
@@ -78,6 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
         updateRollPresetLabels(unitSelect.value);
         previousUnit = unitSelect.value;
         updateOperationalNotes();
+        updateConnectionStatus();
+        updateInstallUi();
         attachEvents();
         markResultsAsStale('Configuración lista. Pulsa Calcular acomodo para actualizar el resultado.');
     }
@@ -266,6 +272,35 @@ document.addEventListener('DOMContentLoaded', () => {
             persistCurrentForm();
             currentCalculation = null;
             setResultPlaceholder('Se restauró la configuración por defecto. Pulsa Calcular acomodo para generar un nuevo plano.');
+        });
+
+        window.addEventListener('online', updateConnectionStatus);
+        window.addEventListener('offline', updateConnectionStatus);
+
+        window.addEventListener('beforeinstallprompt', (event) => {
+            event.preventDefault();
+            deferredInstallPrompt = event;
+            updateInstallUi();
+        });
+
+        window.addEventListener('appinstalled', () => {
+            deferredInstallPrompt = null;
+            updateInstallUi(true);
+        });
+
+        installAppButton?.addEventListener('click', async () => {
+            if (!deferredInstallPrompt) {
+                return;
+            }
+
+            deferredInstallPrompt.prompt();
+            try {
+                await deferredInstallPrompt.userChoice;
+            } catch {
+                // Si el navegador cancela o no expone la respuesta, solo refrescamos el estado.
+            }
+            deferredInstallPrompt = null;
+            updateInstallUi();
         });
     }
 
@@ -1229,6 +1264,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setSettingsStatus(message) {
         settingsStatus.textContent = message;
+    }
+
+    function updateConnectionStatus() {
+        if (!connectionStatus) {
+            return;
+        }
+
+        const isOnline = navigator.onLine;
+        connectionStatus.textContent = isOnline ? 'En línea' : 'Offline disponible';
+        connectionStatus.className = isOnline
+            ? 'app-status-pill app-status-pill-muted'
+            : 'app-status-pill app-status-pill-offline';
+    }
+
+    function updateInstallUi(isInstalled = isRunningStandalone()) {
+        if (!installStatus || !installAppButton) {
+            return;
+        }
+
+        if (isInstalled) {
+            installStatus.textContent = 'App instalada';
+            installStatus.className = 'app-status-pill';
+            installAppButton.classList.add('is-hidden');
+            return;
+        }
+
+        if (deferredInstallPrompt) {
+            installStatus.textContent = 'Instalación disponible';
+            installStatus.className = 'app-status-pill app-status-pill-warning';
+            installAppButton.classList.remove('is-hidden');
+            return;
+        }
+
+        installStatus.textContent = 'Web lista para instalar';
+        installStatus.className = 'app-status-pill';
+        installAppButton.classList.add('is-hidden');
+    }
+
+    function isRunningStandalone() {
+        return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
     }
 
     function openSettingsPanel() {

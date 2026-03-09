@@ -14,6 +14,7 @@ Incluye:
 - configuracion persistente en navegador
 - exportacion de imagen y orden de corte
 - base PWA con manifest y service worker
+- estado visible de instalacion y conectividad
 
 ## Uso local
 
