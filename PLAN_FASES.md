@@ -6,24 +6,38 @@ Estado: base completada.
 
 ## Fase 2
 Preparacion de instalacion web.
-Estado: en progreso.
+Estado: base tecnica completada.
 Entregables actuales:
 - manifest.webmanifest
 - service worker
 - iconos base
 - metadatos de instalacion en HTML
+- servidor local con fallback automatico de puerto
+- scripts estandarizados con Node para arranque y pruebas
 
 ## Fase 3
 Validacion funcional.
-Pendiente.
+Estado: en progreso.
+Avances actuales:
+- validate_engine.js
+- validate_persistence.js
+- validate_server.js
 
 ## Fase 4
 Ajustes de interfaz movil.
-Pendiente.
+Estado: en progreso.
+Avances actuales:
+- compactacion de resultados
+- mejoras de lectura y orden visual en pantallas pequenas
+- redistribucion responsive de la lista de diseños y paneles de resumen
 
 ## Fase 5
 Pruebas de persistencia y comportamiento offline.
-Pendiente.
+Estado: en progreso.
+Avances actuales:
+- saneamiento de localStorage corrupto
+- recuperacion segura de valores por defecto
+- validacion automatizada de persistencia
 
 ## Fase 6
 Cierre productivo final.

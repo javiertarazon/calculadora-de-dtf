@@ -34,10 +34,10 @@ El servidor intenta usar el puerto 4173. Si ese puerto ya esta ocupado, busca au
 ## Fases del proyecto
 
 1. Base responsive estable: completada a nivel base.
-2. Preparar instalacion web: en progreso.
-3. Validar flujos funcionales: pendiente.
-4. Ajustar interfaz movil: pendiente.
-5. Pruebas de persistencia: pendiente.
+2. Preparar instalacion web: completada a nivel tecnico base.
+3. Validar flujos funcionales: en progreso con suite automatizada de motor, persistencia y servidor.
+4. Ajustar interfaz movil: en progreso con refinamientos de densidad y orden visual.
+5. Pruebas de persistencia: en progreso con saneamiento y validacion automatizada.
 6. Cierre productivo final: pendiente.
 
 ## Pendiente antes de cierre de produccion
