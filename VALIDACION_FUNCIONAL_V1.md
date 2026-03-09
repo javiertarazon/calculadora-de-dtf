@@ -38,6 +38,15 @@ Validacion automatizada del servidor local:
 - manifest.webmanifest servido con MIME correcto: OK
 - sw.js y VERSION disponibles por HTTP: OK
 
+Validacion automatizada del contrato PWA:
+- validate_pwa.js: OK
+- VERSION alineada con CACHE_NAME: OK
+- Manifest valido y completo: OK
+- Iconos declarados disponibles: OK
+- APP_SHELL incluye recursos base: OK
+- index.html enlaza recursos PWA: OK
+- sw.js mantiene fallback offline a index.html: OK
+
 ## Checklist funcional
 
 ### 1. Calculo principal

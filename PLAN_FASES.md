@@ -22,6 +22,7 @@ Avances actuales:
 - validate_engine.js
 - validate_persistence.js
 - validate_server.js
+- validate_pwa.js
 
 ## Fase 4
 Ajustes de interfaz movil.
@@ -38,6 +39,7 @@ Avances actuales:
 - saneamiento de localStorage corrupto
 - recuperacion segura de valores por defecto
 - validacion automatizada de persistencia
+- validacion automatizada del contrato PWA y shell offline
 
 ## Fase 6
 Cierre productivo final.
